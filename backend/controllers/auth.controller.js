@@ -43,8 +43,37 @@ export const signup = async (req, res) => {
     }   
 
 }
-export const login = (req, res) => {
-    res.status(200).json({ message: 'User logged in successfully' });
+
+export const login = async (req, res) => {
+    const { email, password } = req.body;
+    if(!email || !password){
+            return res.status(400).json({ message: 'Email and password are required' });
+        }
+
+    try{    
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: 'User not found' });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ message: 'Invalid password' });
+        }
+
+        generateToken(user._id, res);
+        res.status(200).json({ message: 'Login successful', user: { id: user._id, username: user.username, email: user.email } });
+
+
+    }catch (error) {
+        console.log('Error during login:', error);
+        res.status(500).json({ message: 'Error during login', error: error.message });
+    }
+
+
+
+
+
 }       
 export const logout = (req, res) => {
     res.status(200).json({ message: 'User logged out successfully' });
