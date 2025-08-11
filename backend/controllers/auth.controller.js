@@ -62,7 +62,7 @@ export const login = async (req, res) => {
         }
 
         generateToken(user._id, res);
-        res.status(200).json({ message: 'Login successful', user: { id: user._id, username: user.username, email: user.email } });
+        res.status(200).json({ message: 'Login successful', user: { id: user._id, username: user.username, email: user.email, avatar: user.avatar } });
 
 
     }catch (error) {
@@ -71,10 +71,15 @@ export const login = async (req, res) => {
     }
 
 
-
-
-
 }       
 export const logout = (req, res) => {
-    res.status(200).json({ message: 'User logged out successfully' });
+    try{
+        res.cookie("jwt", "", {maxAge:0});
+        res.status(200).json({ message: 'Logout successful' });
+
+    }catch (error) {
+        console.log('Error during logout:', error);
+        res.status(500).json({ message: 'Error during logout', error: error.message });
+    }
+
 }
