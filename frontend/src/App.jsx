@@ -8,8 +8,13 @@ import ProfilePage from './pages/ProfilePage'
 import { Routes,Route } from 'react-router-dom'
 import axios from 'axios'
 import { axiosInstance } from './lib/axios'
+import { useAuthStore } from './store/useAuthStore'
+import { useEffect } from 'react'
+
 
 const App = () => {
+  const {authUser,checkAuth} = useAuthStore()
+
   return (
     <div>
       <Navbar/>
