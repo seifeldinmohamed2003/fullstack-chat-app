@@ -6,6 +6,8 @@ import LoginPage from './pages/LoginPage'
 import SettingsPage from './pages/SettingsPage'
 import ProfilePage from './pages/ProfilePage'
 import { Routes,Route } from 'react-router-dom'
+import axios from 'axios'
+import { axiosInstance } from './lib/axios'
 
 const App = () => {
   return (
